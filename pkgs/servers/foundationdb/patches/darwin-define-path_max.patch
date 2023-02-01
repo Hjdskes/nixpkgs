@@ -1,0 +1,24 @@
+From 7618802e3ab3358450666d9435f73c73d19f1760 Mon Sep 17 00:00:00 2001
+From: Jente Hidskes Ankarberg <jente@griffin.sh>
+Date: Tue, 7 Feb 2023 17:40:13 +0100
+Subject: [PATCH 3/3] define PATH_MAX
+
+---
+ fdbmonitor/fdbmonitor.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git fdbmonitor/fdbmonitor.cpp fdbmonitor/fdbmonitor.cpp
+index 9fa58ff91..6ceb1409b 100644
+--- a/fdbmonitor/fdbmonitor.cpp
++++ b/fdbmonitor/fdbmonitor.cpp
+@@ -44,6 +44,7 @@
+ 
+ #ifdef __APPLE__
+ #include <sys/event.h>
++#include <sys/syslimits.h>
+ #include <mach/mach.h>
+ #include <mach/mach_time.h>
+ #endif
+-- 
+2.37.1 (Apple Git-137.1)
+

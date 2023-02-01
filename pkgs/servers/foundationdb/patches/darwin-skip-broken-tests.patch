@@ -1,0 +1,25 @@
+From 7d2db5ce418bbca8af86a4858beb63df2f985f94 Mon Sep 17 00:00:00 2001
+From: Jente Hidskes Ankarberg <jente@griffin.sh>
+Date: Wed, 8 Feb 2023 16:02:14 +0100
+Subject: [PATCH 5/5] Skip broken tests
+
+These don't compile on Apple Silicon
+---
+ fdbrpc/CMakeLists.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git fdbrpc/CMakeLists.txt fdbrpc/CMakeLists.txt
+index 2da35b990..cbdfa89ab 100644
+--- a/fdbrpc/CMakeLists.txt
++++ b/fdbrpc/CMakeLists.txt
+@@ -62,7 +62,6 @@ endif()
+ 
+ set(FDBRPC_SRCS_DISABLE_ACTOR_DIAGNOSTICS
+   ActorFuzz.actor.cpp
+-  FlowTests.actor.cpp
+   dsltest.actor.cpp)
+ 
+ add_flow_target(STATIC_LIBRARY NAME fdbrpc
+-- 
+2.37.1 (Apple Git-137.1)
+

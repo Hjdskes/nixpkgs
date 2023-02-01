@@ -7642,7 +7642,8 @@ with pkgs;
 
   fusuma = callPackage ../tools/inputmethods/fusuma { };
 
-  fdbPackages = dontRecurseIntoAttrs (callPackage ../servers/foundationdb {
+  fdbPackages = dontRecurseIntoAttrs (darwin.apple_sdk_11_0.callPackage ../servers/foundationdb {
+    inherit (darwin.apple_sdk_11_0.frameworks) CoreFoundation IOKit;
     openjdk = openjdk8; # TODO: remove override https://github.com/NixOS/nixpkgs/pull/89731
     libressl = libressl_3_4;
   });

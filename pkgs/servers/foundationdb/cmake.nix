@@ -3,6 +3,7 @@
 { lib, fetchFromGitHub
 , cmake, ninja, python3, openjdk, mono, pkg-config
 , msgpack, toml11
+, CoreFoundation, IOKit
 
 , gccStdenv, llvmPackages
 , useClang ? false
@@ -40,7 +41,8 @@ let
         };
 
         buildInputs = [ ssl boost ]
-          ++ lib.optionals (lib.versionAtLeast version "7.1.0") [ msgpack toml11 ];
+          ++ lib.optionals (lib.versionAtLeast version "7.1.0") [ msgpack toml11 ]
+          ++ lib.optionals (lib.versionAtLeast version "7.1.0" && stdenv.isDarwin) [ CoreFoundation IOKit ];
 
         nativeBuildInputs = [ pkg-config cmake ninja python3 openjdk mono ]
           ++ lib.optionals useClang [ llvmPackages.lld ];
@@ -70,7 +72,7 @@ let
             # enabled. But even then, it still takes a majority of the time.
             # Same with LLD when Clang is available.
             (lib.optionalString useClang    "-DUSE_LD=LLD")
-            (lib.optionalString (!useClang) "-DUSE_LD=GOLD")
+            # (lib.optionalString (!useClang) "-DUSE_LD=GOLD")
           ] ++ lib.optionals (lib.versionOlder version "7.0.0")
           [ # FIXME: why can't libressl be found automatically?
             "-DLIBRESSL_USE_STATIC_LIBS=FALSE"
@@ -81,8 +83,8 @@ let
           ] ++ lib.optionals (lib.versionAtLeast version "7.1.0" && lib.versionOlder version "7.2.0")
           [ # FIXME: why can't openssl be found automatically?
             "-DOPENSSL_USE_STATIC_LIBS=FALSE"
-            "-DOPENSSL_CRYPTO_LIBRARY=${ssl.out}/lib/libcrypto.so"
-            "-DOPENSSL_SSL_LIBRARY=${ssl.out}/lib/libssl.so"
+            "-DOPENSSL_CRYPTO_LIBRARY=${ssl.out}/lib/libcrypto.dylib"
+            "-DOPENSSL_SSL_LIBRARY=${ssl.out}/lib/libssl.dylib"
           ];
 
         env.NIX_CFLAGS_COMPILE = toString [

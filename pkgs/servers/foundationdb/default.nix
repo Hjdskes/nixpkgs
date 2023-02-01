@@ -4,6 +4,7 @@
 , cmake, ninja, which, findutils, m4, gawk
 , python2, python3, openjdk, mono, libressl, openssl, boost168, boost178
 , pkg-config, msgpack, toml11
+, CoreFoundation, IOKit
 }@args:
 
 let
@@ -99,6 +100,9 @@ in with builtins; {
       ./patches/don-t-run-tests-requiring-doctest.patch
       ./patches/don-t-use-static-boost-libs.patch
       ./patches/fix-open-with-O_CREAT.patch
+      ./patches/darwin-define-path_max.patch
+      ./patches/darwin-fix-aligned-alloc.patch
+      ./patches/darwin-skip-broken-tests.patch
     ];
   };
 }

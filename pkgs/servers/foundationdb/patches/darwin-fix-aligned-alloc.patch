@@ -1,0 +1,31 @@
+From c0237712428b7835afaf095eb60bf09dfa4573a3 Mon Sep 17 00:00:00 2001
+From: Jente Hidskes Ankarberg <jente@griffin.sh>
+Date: Wed, 8 Feb 2023 09:50:21 +0100
+Subject: [PATCH 4/4] Fix aligned_alloc on Darwin
+
+---
+ flow/Platform.h | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git flow/Platform.h flow/Platform.h
+index 020544178..8c29f74c2 100644
+--- a/flow/Platform.h
++++ b/flow/Platform.h
+@@ -679,14 +679,6 @@ inline static void aligned_free(void* ptr) {
+ 	free(ptr);
+ }
+ #elif defined(__APPLE__)
+-#if !defined(HAS_ALIGNED_ALLOC)
+-#include <cstdlib>
+-inline static void* aligned_alloc(size_t alignment, size_t size) {
+-	void* ptr = nullptr;
+-	posix_memalign(&ptr, alignment, size);
+-	return ptr;
+-}
+-#endif
+ inline static void aligned_free(void* ptr) {
+ 	free(ptr);
+ }
+-- 
+2.37.1 (Apple Git-137.1)
+
