@@ -87,7 +87,8 @@ let
 
         env.NIX_CFLAGS_COMPILE = toString [
           # Needed with GCC 12
-          "-Wno-error=missing-template-keyword"
+          # This can be enabled across all architectures once https://github.com/NixOS/nixpkgs/pull/207135 is in.
+          (lib.optionalString (!(stdenv.isAarch64 && stdenv.isLinux)) "-Wno-error=missing-template-keyword")
           # Needed to compile on aarch64
           (lib.optionalString stdenv.isAarch64 "-march=armv8-a+crc")
         ];
@@ -102,7 +103,6 @@ let
           mv $out/fdbmonitor/fdbmonitor $out/bin/fdbmonitor && rm -rf $out/fdbmonitor
           mkdir $out/libexec && ln -sfv $out/bin/fdbbackup $out/libexec/backup_agent
           rm -rf $out/Library
-          rm -rf $out/lib/foundationdb/
           mkdir $out/include/foundationdb && \
             mv $out/include/*.h $out/include/*.options $out/include/foundationdb
         '' + lib.optionalString (lib.versionAtLeast version "7.0.0") ''
